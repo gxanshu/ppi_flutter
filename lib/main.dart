@@ -15,9 +15,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorSchemeSeed: Colors.orange,
-        useMaterial3: true,
-      ),
+          colorSchemeSeed: Colors.orange,
+          useMaterial3: true,
+          textTheme: const TextTheme(
+            displaySmall: TextStyle(fontFamily: "Noto Sans", letterSpacing: 0.9),
+            displayMedium: TextStyle(fontFamily: "Noto Sans", letterSpacing: 0.9),
+            displayLarge: TextStyle(fontFamily: "Noto Sans", letterSpacing: 0.9),
+          )),
       home: const LoginOrRegister(),
     );
   }
