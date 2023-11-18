@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ppi/components/primary_button.dart';
+import 'package:ppi/components/select_box.dart';
 import 'package:ppi/components/text_input.dart';
 import 'package:ppi/components/image_picker.dart';
+import 'package:ppi/utils/Loader.dart';
+import 'package:ppi/utils/show_message.dart';
 
 class RegisterPage extends StatefulWidget {
   void Function() onTap;
@@ -26,16 +30,60 @@ class _RegisterPageState extends State<RegisterPage> {
 
   TextEditingController address = TextEditingController();
 
-  TextEditingController photo = TextEditingController();
-
   File? _avatarImage;
   File? _aadharFrontImage;
   File? _aadharBackImage;
+  String userType = "Member";
 
   void setAvatar(File? img) {
     setState(() {
       _avatarImage = img;
     });
+  }
+
+  void setFrontAadhar(File? img) {
+    setState(() {
+      _aadharFrontImage = img;
+    });
+  }
+
+  void setBackAadhar(File? img) {
+    setState(() {
+      _aadharBackImage = img;
+    });
+  }
+
+  void changeUserType(String type) {
+    userType = type;
+  }
+
+  void registerUser(BuildContext context) async {
+    // show progress bar
+    showLoader(context);
+    if (email.text.isEmpty ||
+        password.text.isEmpty ||
+        name.text.isEmpty ||
+        fatherName.text.isEmpty ||
+        email.text.isEmpty ||
+        phoneNumber.text.isEmpty ||
+        address.text.isEmpty ||
+        _avatarImage == null ||
+        _aadharFrontImage == null ||
+        _aadharBackImage == null) {
+      Navigator.pop(context);
+      showMessage(context, "Something is missing, fill complete fileds");
+    } else {
+      try {
+        UserCredential? userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: email.text, password: password.text);
+        // TODO: have to save data
+        Navigator.pop(context);
+      } on FirebaseException catch (e) {
+        Navigator.pop(context);
+        showMessage(context, e.message!);
+      }
+    }
   }
 
   @override
@@ -105,6 +153,134 @@ class _RegisterPageState extends State<RegisterPage> {
                   hideText: false,
                   controller: email,
                   type: TextInputType.emailAddress),
+              const SizedBox(height: 18),
+              SelectBox(
+                  value: "Member",
+                  items: const ["Member", "Driver", "Associate"],
+                  changeState: changeUserType),
+              const SizedBox(height: 18),
+              Row(
+                children: [
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.surfaceVariant,
+                      ),
+                      child: _aadharFrontImage == null
+                          ? Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  showSelectPhotoOptions(
+                                      context, setFrontAadhar);
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add_a_photo,
+                                      size: 24,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                                    const SizedBox(
+                                      height: 6,
+                                    ),
+                                    Text(
+                                      "Aadhar Front",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Stack(children: [
+                                Image.file(_aadharFrontImage!),
+                                Positioned(
+                                    top: -10,
+                                    right: -10,
+                                    child: IconButton(
+                                      onPressed: () => {
+                                        setState(() {
+                                          _aadharFrontImage = null;
+                                        })
+                                      },
+                                      icon: const Icon(Icons.close),
+                                    ))
+                              ]),
+                            ),
+                    ),
+                  )),
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Container(
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.surfaceVariant,
+                      ),
+                      child: _aadharBackImage == null
+                          ? Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  showSelectPhotoOptions(
+                                      context, setBackAadhar);
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add_a_photo,
+                                      size: 24,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                                    const SizedBox(
+                                      height: 6,
+                                    ),
+                                    Text(
+                                      "Aadhar Back",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Stack(children: [
+                                Image.file(_aadharBackImage!),
+                                Positioned(
+                                    top: -10,
+                                    right: -10,
+                                    child: IconButton(
+                                      onPressed: () => {
+                                        setState(() {
+                                          _aadharBackImage = null;
+                                        })
+                                      },
+                                      icon: const Icon(Icons.close),
+                                    ))
+                              ]),
+                            ),
+                    ),
+                  ))
+                ],
+              ),
               const SizedBox(height: 12),
               TextInput(
                   placeholder: "Password",
@@ -115,9 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
               PrimaryButton(
                 text: "Register",
                 onPress: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+                  registerUser(context);
                 },
               ),
               const SizedBox(height: 18),

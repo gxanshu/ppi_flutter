@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "347902300537",
+    "project_id": "parivartan-party",
+    "storage_bucket": "parivartan-party.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347902300537:android:62b01bfbaabd8bcb485fa8",
+        "android_client_info": {
+          "package_name": "com.example.ppi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWS7PCJFIKjco6ziX5YBdVQTF430eXiFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

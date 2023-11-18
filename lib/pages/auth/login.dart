@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ppi/components/primary_button.dart';
 import 'package:ppi/components/text_input.dart';
+import 'package:ppi/utils/Loader.dart';
+import 'package:ppi/utils/show_message.dart';
 
 class LoginScreen extends StatelessWidget {
   void Function() onTap;
@@ -8,6 +11,23 @@ class LoginScreen extends StatelessWidget {
 
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+
+  void loginUser(BuildContext context) async {
+    showLoader(context);
+    if (email.text.isEmpty || password.text.isEmpty) {
+      Navigator.pop(context);
+      showMessage(context, "Fill both fileds");
+    } else {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: email.text, password: password.text);
+        if(context.mounted) Navigator.pop(context);
+      } on FirebaseAuthException catch (e) {
+        Navigator.pop(context);
+        showMessage(context, e.message!);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
