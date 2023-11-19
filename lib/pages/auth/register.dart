@@ -172,7 +172,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       child: _aadharFrontImage == null
                           ? Center(
-                              child: GestureDetector(
+                              child: InkWell(
+                                splashColor: Theme.of(context).colorScheme.secondaryContainer,
                                 onTap: () {
                                   showSelectPhotoOptions(
                                       context, setFrontAadhar);
@@ -231,7 +232,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       child: _aadharBackImage == null
                           ? Center(
-                              child: GestureDetector(
+                              child: InkWell(
+                                splashColor: Theme.of(context).colorScheme.secondaryContainer,
                                 onTap: () {
                                   showSelectPhotoOptions(
                                       context, setBackAadhar);

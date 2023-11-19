@@ -70,7 +70,9 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 18),
             PrimaryButton(
               text: "Login",
-              onPress: () {},
+              onPress: () {
+                loginUser(context);
+                },
             ),
             const SizedBox(height: 18),
             Row(

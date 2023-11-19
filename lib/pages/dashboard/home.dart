@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ppi/components/news_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,6 +17,11 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.bold),
         )),
         backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [NewsCard(), NewsCard(), NewsCard()],
+        ),
       ),
     );
   }
