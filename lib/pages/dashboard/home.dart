@@ -18,9 +18,12 @@ class HomePage extends StatelessWidget {
         )),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [NewsCard(), NewsCard(), NewsCard()],
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: Center(
+          child: ListView(
+            children: [NewsCard(), NewsCard()],
+          ),
         ),
       ),
     );

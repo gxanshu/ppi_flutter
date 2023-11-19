@@ -33,17 +33,17 @@ class _DashboardState extends State<Dashboard> {
   Widget build(context) {
     return Scaffold(
       body: screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        onTap: changeIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.groups), label: "Members"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _currentIndex,
+        //type: BottomNavigationBarType.fixed,
+        onDestinationSelected: changeIndex,
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: "Home"),
+          NavigationDestination(icon: Icon(Icons.groups), label: "Members"),
+          NavigationDestination(icon: Icon(Icons.search), label: "Search"),
+          NavigationDestination(
               icon: Icon(Icons.personal_injury), label: "Complain"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "About"),
+          NavigationDestination(icon: Icon(Icons.person), label: "About"),
         ],
       ),
     );
